@@ -8,6 +8,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
   const { id } = params
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [category, setCategory] = useState('')
   const router = useRouter()
 
   const fetchPost = async (id: string) => {
@@ -15,6 +16,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
       const response = await axios.get(`/api/posts/${id}`)
       setTitle(response.data.title)
       setContent(response.data.content)
+      setCategory(response.data.category)
     } catch (error) {
       console.log(error)
     }
@@ -32,6 +34,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
       await axios.put(`/api/posts/${id}`, {
         title,
         content,
+        category,
       })
       router.push('/')
     } catch (error) {
@@ -82,6 +85,20 @@ const Edit = ({ params }: { params: { id: string } }) => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           ></textarea>
         </div>
+
+        <div>
+          <label>Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select a category</option>
+            {/* Example static categories, replace or populate dynamically */}
+            <option value="Tech">Tech</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+        </div>
+
         <div>
           <button
             type="submit"

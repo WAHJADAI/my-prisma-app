@@ -5,13 +5,21 @@ import axios from 'axios'
 import Link from 'next/link'
 
 export default function Home() {
-  const posts = [
-    {
-      id: 1,
-      title: 'test',
-      content: 'test',
-    },
-  ]
+  const [posts, setPost] = useState([])
+
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get('/api/posts')
+      setPost(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Blog Posts</h1>

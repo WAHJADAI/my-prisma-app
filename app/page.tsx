@@ -16,6 +16,16 @@ export default function Home() {
     }
   }
 
+  const deletePost = async (id: number) => {
+    try {
+      await axios.delete(`/api/posts/${id}`)
+      alert('delete successful!')
+      fetchPosts()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchPosts()
   }, [])
@@ -56,7 +66,10 @@ export default function Home() {
                   >
                     Edit
                   </Link>
-                  <button className="text-red-600 hover:text-red-900">
+                  <button
+                    onClick={() => deletePost(post.id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
                     Delete
                   </button>
                 </td>

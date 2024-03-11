@@ -20,26 +20,38 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const { title, content } = await request.json()
-  const postId = Number(params.id)
+  try {
+    const { title, content } = await request.json()
+    const postId = Number(params.id)
 
-  const updatePost = await prisma.post.update({
-    where: { id: postId },
-    data: {
-      title,
-      content,
-    },
-  })
-  return Response.json(updatePost)
+    const updatePost = await prisma.post.update({
+      where: { id: postId },
+      data: {
+        title,
+        content,
+      },
+    })
+    return Response.json(updatePost)
+  } catch (error) {
+    return new Response(error as BodyInit, {
+      status: 500,
+    })
+  }
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const postId = Number(params.id)
-  const deleteId = await prisma.post.delete({
-    where: { id: postId },
-  })
-  return Response.json(deleteId)
+  try {
+    const postId = Number(params.id)
+    const deleteId = await prisma.post.delete({
+      where: { id: postId },
+    })
+    return Response.json(deleteId)
+  } catch (error) {
+    return new Response(error as BodyInit, {
+      status: 500,
+    })
+  }
 }

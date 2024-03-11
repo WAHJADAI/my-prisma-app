@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const search = searchParams.get('search') || ''
   const category = searchParams.get('category')
-  const sort = searchParams.get('sort') || 'des'
+  const sort = searchParams.get('sort') || 'desc'
 
   let whereCondition = category
     ? {

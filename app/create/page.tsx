@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 const Create = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [category, setCategory] = useState('')
   const router = useRouter()
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -63,6 +64,20 @@ const Create = () => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           ></textarea>
         </div>
+
+        <div>
+          <label>Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select a category</option>
+            {/* Example static categories, replace or populate dynamically */}
+            <option value="Tech">Tech</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+        </div>
+
         <div>
           <button
             type="submit"

@@ -12,7 +12,11 @@ export async function GET(request: NextRequest) {
 
   let whereCondition = category
     ? {
-        category,
+        category: {
+          is: {
+            name: category,
+          },
+        },
         title: {
           contains: search,
           mode: 'insensitive',

@@ -30,17 +30,20 @@ export async function GET(request: NextRequest) {
     orderBy: {
       createdAt: sort,
     } as any,
+    include: {
+      category: true,
+    },
   })
   return Response.json(posts)
 }
 
 export async function POST(request: Request) {
-  const { title, content, category } = await request.json()
+  const { title, content, categoryId } = await request.json()
   const newPost = await prisma.post.create({
     data: {
       title,
       content,
-      category,
+      categoryId: Number(categoryId),
     },
   })
   return Response.json(newPost)

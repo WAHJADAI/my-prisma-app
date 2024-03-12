@@ -8,7 +8,8 @@ const Edit = ({ params }: { params: { id: string } }) => {
   const { id } = params
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
+  const [categories, setCategories] = useState([])
   const router = useRouter()
 
   const fetchPost = async (id: string) => {
@@ -16,7 +17,16 @@ const Edit = ({ params }: { params: { id: string } }) => {
       const response = await axios.get(`/api/posts/${id}`)
       setTitle(response.data.title)
       setContent(response.data.content)
-      setCategory(response.data.category)
+      setCategoryId(response.data.categoryId)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`/api/categories`)
+      setCategories(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -25,6 +35,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     if (id) {
       fetchPost(id)
+      fetchCategories()
     }
   }, [id])
 
@@ -34,7 +45,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
       await axios.put(`/api/posts/${id}`, {
         title,
         content,
-        category,
+        categoryId,
       })
       router.push('/')
     } catch (error) {
@@ -89,13 +100,14 @@ const Edit = ({ params }: { params: { id: string } }) => {
         <div>
           <label>Category</label>
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
           >
             <option value="">Select a category</option>
             {/* Example static categories, replace or populate dynamically */}
-            <option value="Tech">Tech</option>
-            <option value="Lifestyle">Lifestyle</option>
+            {categories.map((cat: any) => (
+              <option value={cat.id}>{cat.name}</option>
+            ))}
           </select>
         </div>
 

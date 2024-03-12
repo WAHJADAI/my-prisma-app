@@ -9,12 +9,22 @@ export default function Home() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('desc')
+  const [categories, setCategories] = useState([])
 
   const fetchPosts = async () => {
     try {
       const query = new URLSearchParams({ category, search, sort }).toString()
       const response = await axios.get(`/api/posts?${query}`)
       setPost(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`/api/categories`)
+      setCategories(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -36,6 +46,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchPosts()
+    fetchCategories()
   }, [])
 
   return (
@@ -57,8 +68,9 @@ export default function Home() {
             className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Select Category</option>
-            <option value="Tech">Tech</option>
-            <option value="Lifestyle">Lifestyle</option>
+            {categories.map((cat: any) => (
+              <option value={cat.name}>{cat.name}</option>
+            ))}
           </select>
           <select
             value={sort}
